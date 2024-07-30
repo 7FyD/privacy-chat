@@ -26,7 +26,7 @@ const generateSessionToken = (roomId: string) => {
   return roomId + uuid;
 };
 
-export async function authRoom(roomId: string, password: string) {
+export async function joinRoom(roomId: string, password: string) {
   const COOKIE_NAME = `chat_session_${roomId}`;
   const isValid = await verifyPassword(roomId, password);
 

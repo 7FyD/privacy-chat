@@ -1,34 +1,78 @@
 "use client";
 
+import { joinRoom } from "@/app/actions/join-room";
 import { useState } from "react";
-import { Input } from "@/app/components/ui/input";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { authRoom } from "@/app/actions/verify-password";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import Link from "next/link";
 
 const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const verifyPassword = async () => {
+  const handleSubmit = async () => {
     try {
-      const response = await authRoom(roomId, password);
-      console.log(response);
+      const response = await joinRoom(roomId, password);
+      if (response.error) {
+        setError(response.error);
+      }
     } catch (err) {
       setError("Unexpected error occurred.");
     }
   };
 
   return (
-    <div>
-      <Input
-        value={password}
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Enter password"
-      />
-      <Button onClick={verifyPassword}>Enter chatroom</Button>
-      {error && <p className="text-red-500">{error}</p>}
-    </div>
+    <Card className="w-[350px] mx-auto mt-48">
+      <CardHeader>
+        <CardTitle className="text-primary">Join room</CardTitle>
+        <CardDescription className="text-primary/90">
+          Enter your name and the room's password
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                value={user}
+                onChange={(e) => setUser(e.target.value)}
+                type="text"
+                id="name"
+                placeholder="Anonymous User"
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password">Room password</Label>
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                id="password"
+                placeholder="******"
+              />
+            </div>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Link href="/chat">
+          <Button variant="outline">Go back</Button>
+        </Link>
+        <Button onClick={handleSubmit}>Join room</Button>
+      </CardFooter>
+    </Card>
   );
 };
 

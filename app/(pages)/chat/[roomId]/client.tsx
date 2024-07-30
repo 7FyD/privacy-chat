@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
+import { Checkbox } from "@/app/components/ui/checkbox";
+import { Clipboard } from "lucide-react";
 
 interface Message {
   user: string;
@@ -14,11 +16,11 @@ interface Message {
 let socket: Socket;
 
 const ChatClient: React.FC<{ roomId: string }> = ({ roomId }) => {
-  const [input, setInput] = useState("");
-  const [user, setUser] = useState("Anonymous user");
+  const [input, setInput] = useState<string>("");
+  const [user, setUser] = useState<string>("Anonymous user");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [showTimestamps, setShowTimestamps] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     socket = io();
     socket.emit("join room", roomId);
@@ -65,7 +67,7 @@ const ChatClient: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   return (
     <div className="container">
-      <div className="flex flex-col justify-start items-center gap-12">
+      <div className="flex flex-col justify-start items-center gap-6">
         <Input
           value={user}
           type="text"
@@ -74,35 +76,62 @@ const ChatClient: React.FC<{ roomId: string }> = ({ roomId }) => {
           placeholder="Enter username"
           className="max-w-xs"
         />
-        <div className="space-y-4">
-          <div
-            id="messagesContainer"
-            className="min-h-80 max-h-80 w-[56rem] break-words overflow-y-auto border-2 p-4 rounded-xl"
-            ref={messagesEndRef}
-          >
-            {messages.length === 0 && (
-              <p className="font-light">Chat is empty...</p>
-            )}
-            {messages.map((msg, index) => (
-              <div key={index}>
-                <span>{new Date(msg.timestamp).toLocaleTimeString()} </span>
-                <span>{msg.user}: </span>
-                <span>{msg.text}</span>
-              </div>
-            ))}
+        <div className="w-[56rem] space-y-6">
+          <div className="flex justify-start items-center gap-2">
+            <Checkbox
+              checked={showTimestamps}
+              onCheckedChange={() => setShowTimestamps(!showTimestamps)}
+            />
+            <p>Show timestamps</p>
           </div>
-          <Input
-            value={input}
-            type="text"
-            maxLength={320}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message"
-            className="max-w-lg"
-            onKeyDown={handleKeyDown}
-          />
-          <Button variant={"outline"} onClick={sendMessage}>
-            Send
-          </Button>
+          <p>Time remaining: ...</p>
+          <div className="space-y-4">
+            <div
+              id="messagesContainer"
+              className="min-h-[44rem] max-h-[44rem] w-[56rem] break-words overflow-y-auto border-2 p-4 rounded-xl space-y-2"
+              ref={messagesEndRef}
+            >
+              {messages.length === 0 && (
+                <p className="font-light">Chat is empty...</p>
+              )}
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`w-full flex items-center break-words group gap-2 p-2 ${
+                    index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                  }`}
+                >
+                  <span
+                    className={`min-w-fit ${showTimestamps ? "" : "hidden"}`}
+                  >
+                    {new Date(msg.timestamp).toLocaleTimeString()}{" "}
+                  </span>
+                  <span className="min-w-fit">{msg.user}: </span>
+                  <span className="min-w-[1%]">{msg.text}</span>
+                  <Clipboard
+                    onClick={() => {
+                      navigator.clipboard.writeText(msg.text);
+                    }}
+                    className="ml-auto mr-2 min-w-5 max-w-5 hover:cursor-pointer hidden group-hover:inline"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex gap-4 justify-between items-center">
+            <Input
+              value={input}
+              type="text"
+              maxLength={320}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message"
+              className="max-w-xl"
+              onKeyDown={handleKeyDown}
+            />
+            <Button className="w-48" variant={"default"} onClick={sendMessage}>
+              Send message
+            </Button>
+          </div>
         </div>
       </div>
     </div>

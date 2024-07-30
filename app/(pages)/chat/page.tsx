@@ -4,7 +4,7 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { useState, useTransition } from "react";
 
-import createRoom from "@/app/actions/createRoom";
+import createRoom from "@/app/actions/create-room";
 import { useRouter } from "next/navigation";
 
 const ChatDefault = () => {
@@ -24,9 +24,7 @@ const ChatDefault = () => {
         if (data.success) {
           setError("");
           setSuccess(data.success);
-          setTimeout(() => {
-            router.push(`/chat/${data.id}`);
-          }, 2000);
+          router.push(`/chat/${data.id}`);
         }
       });
     });

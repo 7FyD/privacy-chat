@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Page = () => {
   return (
     <div className="container mt-24 space-y-10">
@@ -7,9 +9,12 @@ const Page = () => {
         </h2>
         <h4 className="text-center text-4xl font-light">We've got you!</h4>
       </div>
-      <button className="mx-auto block bg-red-500 hover:bg-red-700 transition-colors rounded-full p-4 text-white">
+      <Link
+        href="/chat"
+        className="mx-auto block bg-red-500 hover:bg-red-700 transition-colors rounded-full p-4 text-white max-w-max"
+      >
         Start a one-to-one conversation!
-      </button>
+      </Link>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
         temporibus cumque voluptatibus deserunt minus natus. Adipisci deleniti

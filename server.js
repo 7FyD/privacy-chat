@@ -8,6 +8,8 @@ const handle = app.getRequestHandler();
 
 const chatHistories = {}; // in-memory store for chat histories
 
+let PORT = 3000;
+
 app.prepare().then(() => {
   const server = createServer((req, res) => {
     handle(req, res);
@@ -44,8 +46,17 @@ app.prepare().then(() => {
     });
   });
 
-  server.listen(3000, (err) => {
-    if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+  server.on("error", (e) => {
+    if (e.code === "EADDRINUSE") {
+      console.error("Address already in use, retrying in a few seconds...");
+      PORT = PORT + 1;
+      setTimeout(() => {
+        server.listen(PORT);
+      }, 1000);
+    }
+  });
+
+  server.listen(PORT, (err) => {
+    console.log(`> Ready on http://localhost:${PORT}`);
   });
 });

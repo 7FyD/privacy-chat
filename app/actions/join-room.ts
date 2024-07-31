@@ -16,7 +16,6 @@ const verifyPassword = async (roomId: string, password: string) => {
     // roomSecret = room.secret;
     return room?.password === password;
   } catch (e) {
-    console.error("Password verification error:", e);
     return false;
   }
 };
@@ -26,22 +25,29 @@ const generateSessionToken = (roomId: string) => {
   return roomId + uuid;
 };
 
-export async function joinRoom(roomId: string, password: string) {
+export async function joinRoom(
+  roomId: string,
+  password: string,
+  user?: string
+) {
   const COOKIE_NAME = `chat_session_${roomId}`;
   const isValid = await verifyPassword(roomId, password);
 
   if (!isValid) {
-    return { error: "Bad request." };
+    return { error: "Invalid room or password." };
   }
 
   const sessionToken = generateSessionToken(roomId);
 
+  const combinedValue = `${sessionToken}:${user ? user : "Anonymous User"}`;
+
   // set the cookie in the response headers using cookies API
-  cookies().set(COOKIE_NAME, sessionToken, {
+  cookies().set(COOKIE_NAME, combinedValue, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 3600,
     path: "/",
+    // how do I add name here?
   });
 
   return { success: "Verified and session started." };

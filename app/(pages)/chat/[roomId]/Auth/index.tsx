@@ -23,7 +23,7 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await joinRoom(roomId, password);
+      const response = await joinRoom(roomId, password, user);
       if (response.error) {
         setError(response.error);
       }
@@ -41,32 +41,31 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
-                type="text"
-                id="name"
-                placeholder="Anonymous User"
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Room password</Label>
-              <Input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                id="password"
-                placeholder="******"
-              />
-            </div>
+        <div className="grid w-full items-center gap-6">
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              type="text"
+              id="name"
+              placeholder="Anonymous user"
+            />
           </div>
-        </form>
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="password">Room password</Label>
+            <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              id="password"
+              placeholder="******"
+            />
+          </div>
+        </div>
+        <p className="text-red-500 font-medium mt-2">{error}</p>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className={`flex justify-between ${!error && "mt-6"}`}>
         <Link href="/chat">
           <Button variant="outline">Go back</Button>
         </Link>

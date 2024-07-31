@@ -9,13 +9,18 @@ export default async function ChatPage({
 }) {
   const COOKIE_NAME = `chat_session_${params.roomId}`;
   const cookie = cookies().get(COOKIE_NAME);
+  const cookieValue = cookie?.value;
+  let username: string;
+  if (cookieValue && cookieValue.split(":")[1])
+    username = cookieValue.split(":")[1];
+  else username = "Anonymous user";
 
   const isAuthenticated = !!cookie;
 
   return (
     <>
       {isAuthenticated ? (
-        <ChatClient roomId={params.roomId} />
+        <ChatClient roomId={params.roomId} username={username} />
       ) : (
         <Auth roomId={params.roomId} />
       )}

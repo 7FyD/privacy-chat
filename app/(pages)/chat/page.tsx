@@ -33,23 +33,26 @@ const ChatDefault = () => {
   const [user, setUser] = useState("");
   const [isLoading, startTransition] = useTransition();
   const [duration, setDuration] = useState("");
-  console.log(Number(duration));
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const handleSubmit = () => {
-    startTransition(() => {
-      createRoom(password).then((data) => {
-        if (data.error) {
-          setSuccess("");
-          setError(data.error);
-        }
-        if (data.success) {
-          setError("");
-          setSuccess(data.success);
-          router.push(`/chat/${data.id}`);
-        }
+    if (Number.isNaN(Number(duration)) || Number(duration) === 0) {
+      setError("Please set a valid duration for the room.");
+    } else {
+      startTransition(() => {
+        createRoom(password, Number(duration), user).then((data) => {
+          if (data.error) {
+            setSuccess("");
+            setError(data.error);
+          }
+          if (data.success) {
+            setError("");
+            setSuccess(data.success);
+            router.push(`/chat/${data.id}`);
+          }
+        });
       });
-    });
+    }
   };
   return (
     <Card className="w-[350px] mx-auto mt-48">
@@ -103,12 +106,12 @@ const ChatDefault = () => {
             </Select>
           </div>
         </div>
-        <p className="text-center text-emerald-500 font-medium mt-2">
+        <p className="text-center text-emerald-500 font-medium mt-4">
           {success}
         </p>
-        <p className="text-center text-red-500 font-medium mt-2">{error}</p>
+        <p className="text-center text-red-500 font-medium mt-4">{error}</p>
       </CardContent>
-      <CardFooter className={`${!error && "mt-6"}`}>
+      <CardFooter>
         <Button
           className="mx-auto w-full"
           disabled={isLoading}

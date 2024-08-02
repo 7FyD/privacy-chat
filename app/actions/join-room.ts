@@ -13,7 +13,15 @@ const verifyPassword = async (roomId: string, password: string) => {
       },
     });
     // roomSecret = room.secret;
-    return room?.password === password;
+    if (!room) return false;
+
+    const now = new Date();
+    if (room?.createdAt < new Date(now.getTime() - room.ttl)) {
+      console.log("expired room");
+      // TODO delete room from database and remove the room's saved messages
+    }
+
+    return room.password === password;
   } catch (e) {
     return false;
   }

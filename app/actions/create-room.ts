@@ -1,4 +1,6 @@
 "use server";
+import bcrypt from "bcryptjs";
+
 import { db } from "../lib/prisma";
 import { createAuthCookie } from "./auth-cookie";
 
@@ -7,11 +9,20 @@ const createRoom = async (
   ttl: number,
   user = "Anonymous user"
 ) => {
-  // TODO add password/time to live sanitization
+  if (password.length > 33)
+    return { error: "Password cannot have more than 32 characters." };
+
+  const validTTLs = [900, 1800, 3600, 10800, 21600, 86400];
+  if (Number.isNaN(ttl) || !validTTLs.includes(ttl)) {
+    return { error: "Please set a valid duration for the room." };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     const newRoom = await db.chat.create({
       data: {
-        password,
+        password: hashedPassword,
         ttl,
       },
     });

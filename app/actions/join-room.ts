@@ -1,5 +1,7 @@
 "use server";
 
+import bcrypt from "bcryptjs";
+
 import { db } from "../lib/prisma";
 import { createAuthCookie } from "./auth-cookie";
 
@@ -20,8 +22,8 @@ const verifyPassword = async (roomId: string, password: string) => {
       console.log("expired room");
       // TODO delete room from database and remove the room's saved messages
     }
-
-    return room.password === password;
+    const passwordMatch = await bcrypt.compare(password, room.password);
+    return passwordMatch;
   } catch (e) {
     return false;
   }

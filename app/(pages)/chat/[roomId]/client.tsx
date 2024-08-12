@@ -18,16 +18,21 @@ interface Message {
 
 let socket: Socket;
 
+type Connection = {
+  id: string;
+  username: string;
+  roomId: string;
+};
+
 const ChatClient: React.FC<{ roomId: string; username: string }> = ({
   roomId,
   username,
 }) => {
   const [input, setInput] = useState<string>("");
-  const [user, setUser] = useState<string>(username);
   const [messages, setMessages] = useState<Message[]>([]);
   const [showTimestamps, setShowTimestamps] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const [userList, setUserList] = useState<Array<Connection>>([]);
   useEffect(() => {
     const checkRoomValidity = async () => {
       const isValid = await checkRoom(roomId);
@@ -39,8 +44,7 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
 
   useEffect(() => {
     socket = io();
-    socket.emit("join room", roomId);
-
+    socket.emit("join room", { roomId, username });
     socket.on("chat history", (history: Message[]) => {
       setMessages(history);
     });
@@ -49,9 +53,14 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
+    socket.on("room update", (connections: Array<Connection>) => {
+      setUserList(connections);
+    });
+
     return () => {
       socket.off("chat history");
       socket.off("message");
+      socket.off("room update");
       socket.disconnect();
     };
   }, []);
@@ -69,7 +78,7 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
   const sendMessage = () => {
     if (input.trim()) {
       const message: Message = {
-        user: user || "Anonymous user",
+        user: username || "Anonymous user",
         text: input,
         timestamp: new Date(),
       };

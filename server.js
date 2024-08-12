@@ -2,6 +2,7 @@ const { createServer } = require("http");
 const next = require("next");
 const { Server } = require("socket.io");
 
+const secret = process.env.CHAT_API_SECRET;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -10,23 +11,25 @@ const chatHistories = {}; // in-memory store for chat histories
 
 let PORT = 3000;
 
+let connections = [];
+
 app.prepare().then(() => {
   const server = createServer((req, res) => {
     if (req.method === "POST" && req.url === "/api/deleteChatHistory") {
       let body = "";
+
       req.on("data", (chunk) => {
         body += chunk.toString();
       });
 
       req.on("end", () => {
-        const secret = process.env.CHAT_API_SECRET;
-
         const authHeader = req.headers.authorization;
 
         if (!authHeader || authHeader.split(" ")[1] !== secret) {
           res.statusCode = 403;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ error: "Unauthorized request." }));
+
           return;
         }
 
@@ -36,6 +39,7 @@ app.prepare().then(() => {
           res.statusCode = 400;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ error: "Room ID is required." }));
+
           return;
         }
 
@@ -43,11 +47,13 @@ app.prepare().then(() => {
           res.statusCode = 405;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ error: "Method Not Allowed" }));
+
           return;
         }
 
         if (chatHistories[roomId]) {
           delete chatHistories[roomId];
+
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
           res.end(
@@ -75,11 +81,16 @@ app.prepare().then(() => {
   const io = new Server(server);
 
   io.on("connection", (socket) => {
-    console.log("a user connected");
-
-    socket.on("join room", (roomId) => {
+    socket.on("join room", ({ roomId, username }) => {
       socket.join(roomId);
-      console.log(`User joined room ${roomId}`);
+
+      console.log(`User ${username} has joined room ${roomId}`);
+
+      connections.push({
+        id: socket.id,
+        username: username,
+        roomId: roomId,
+      });
 
       // send the chat history for the room
       if (chatHistories[roomId]) {
@@ -87,6 +98,8 @@ app.prepare().then(() => {
       } else {
         chatHistories[roomId] = [];
       }
+
+      io.to(roomId).emit("room update", connections);
     });
 
     socket.on("message", ({ roomId, message }) => {
@@ -98,11 +111,22 @@ app.prepare().then(() => {
       } else {
         chatHistories[roomId] = [message];
       }
+
       io.to(roomId).emit("message", message);
     });
 
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      const removedConnectionIndex = connections.findIndex(
+        (obj) => obj.id === socket.id
+      );
+
+      if (removedConnectionIndex !== -1) {
+        const desiredRoomId = connections[removedConnectionIndex].roomId;
+        connections.splice(removedConnectionIndex, 1);
+        io.to(desiredRoomId).emit("room update", connections);
+      }
+
+      console.log(`user ${socket.id} disconnected`);
     });
   });
 

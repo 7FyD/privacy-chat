@@ -8,7 +8,7 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { Clipboard } from "lucide-react";
-import { Label } from "@/app/components/ui/label";
+import { Separator } from "@/app/components/ui/separator";
 
 interface Message {
   user: string;
@@ -156,16 +156,14 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
             />
             <p>Show timestamps</p>
           </div>
-          <div className="flex flex-col space-y-2">
-            <Label>Change username</Label>
-            <Input
-              value={user}
-              type="text"
-              maxLength={20}
-              onChange={(e) => setUser(e.target.value)}
-              placeholder="Your name..."
-              className="max-w-fit md:max-w-xs bg-white"
-            />
+          <Separator className="h-[1.5px]" />
+          <p className="font-bold mt-[-10px]">Connected users:</p>
+          <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto pr-16">
+            {userList && userList.length > 0 ? (
+              userList.map((user) => <p key={user.id}>{user.username}</p>)
+            ) : (
+              <p>No users found.</p>
+            )}
           </div>
         </div>
       </div>

@@ -1,10 +1,23 @@
 import Link from "next/link";
+import { Separator } from "../ui/separator";
 
 const Header = () => {
   return (
-    <Link href="/" className="text-center">
-      Go home
-    </Link>
+    <div className="w-full border-b-[1.5px]">
+      <div className="container hidden sm:flex justify-between py-6">
+        <div className="flex justify-start gap-16 items-center">
+          <Link href="/">LOGO(home)</Link>
+          <Link href="/chat" className="text-primary font-semibold">
+            Create new chat!
+          </Link>
+        </div>
+        <div className="flex justify-start gap-8 items-center">
+          <Link href="/">About us</Link>
+          <Link href="/">About us</Link>
+          <Link href="/">About us</Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

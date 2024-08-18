@@ -4,7 +4,7 @@ import { Separator } from "../ui/separator";
 
 const Home = () => {
   return (
-    <div className="container flex flex-col items-center mt-24 space-y-10">
+    <div className="container flex flex-col items-center space-y-10">
       <div className="space-y-4">
         <h2 className="text-center text-2xl md:text-4xl">
           Looking to have a private, quick conversation?

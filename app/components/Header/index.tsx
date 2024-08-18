@@ -3,7 +3,7 @@ import { Separator } from "../ui/separator";
 
 const Header = () => {
   return (
-    <div className="w-full border-b-[1.5px]">
+    <div className="w-full border-b-[1.5px] mb-8">
       <div className="container hidden sm:flex justify-between py-6">
         <div className="flex justify-start gap-16 items-center">
           <Link href="/">LOGO(home)</Link>
@@ -13,8 +13,7 @@ const Header = () => {
         </div>
         <div className="flex justify-start gap-8 items-center">
           <Link href="/">About us</Link>
-          <Link href="/">About us</Link>
-          <Link href="/">About us</Link>
+          <Link href="/">Contact</Link>
         </div>
       </div>
     </div>

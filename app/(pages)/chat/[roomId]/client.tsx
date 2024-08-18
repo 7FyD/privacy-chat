@@ -99,7 +99,7 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
   };
 
   return (
-    <div className="container mt-12">
+    <div className="container">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="space-y-6">
           <div

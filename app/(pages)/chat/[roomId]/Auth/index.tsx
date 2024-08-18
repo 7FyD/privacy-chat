@@ -33,7 +33,7 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
   };
 
   return (
-    <Card className="w-[350px] mx-auto mt-48">
+    <Card className="w-[350px] mx-auto mt-16">
       <CardHeader>
         <CardTitle className="text-primary">Join room</CardTitle>
         <CardDescription className="text-primary/90">

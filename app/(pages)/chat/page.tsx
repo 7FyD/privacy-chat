@@ -55,7 +55,7 @@ const ChatDefault = () => {
     }
   };
   return (
-    <Card className="w-[350px] mx-auto mt-48">
+    <Card className="w-[350px] mx-auto mt-16">
       <CardHeader>
         <CardTitle className="text-primary">Create a room</CardTitle>
         <CardDescription className="text-primary/90">

@@ -11,8 +11,8 @@ const Header = () => {
             Create new chat!
           </Link>
         </div>
-        <div className="flex justify-start gap-8 items-center">
-          <Link href="/">About us</Link>
+        <div className="flex justify-start gap-12 items-center">
+          <Link href="/about">About Privacy Chat</Link>
           <Link href="/">Contact</Link>
         </div>
       </div>

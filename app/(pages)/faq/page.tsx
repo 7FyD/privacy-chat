@@ -1,10 +1,16 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/app/components/ui/accordion";
 import { Separator } from "@/app/components/ui/separator";
 import Link from "next/link";
 import React from "react";
 
 const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
   {
-    question: "Is it secure?",
+    question: "Is Privacy Chat fully secure?",
     answer: (
       <p className="text-gray-700">
         Yes, our Privacy Chat services run exclusively on HTTPS, ensuring that
@@ -68,15 +74,6 @@ const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
     ),
   },
   {
-    question: "Can I access a chat after it has already expired?",
-    answer: (
-      <p className="text-gray-700">
-        No. Once a chat expires, all its content is deleted and you must create
-        a new chat if you wish to continue your conversations.
-      </p>
-    ),
-  },
-  {
     question: "Can someone access my chats and messages without my permission?",
     answer: (
       <p className="text-gray-700">
@@ -88,21 +85,38 @@ const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
       </p>
     ),
   },
+  {
+    question: "Can I access a chat after it has already expired?",
+    answer: (
+      <p className="text-gray-700">
+        No. Once a chat expires, all its content is deleted and you must create
+        a new chat if you wish to continue your conversations.
+      </p>
+    ),
+  },
 ];
 
 const FAQPage = () => {
   return (
-    <div className="container space-y-4">
+    <div className="container">
       <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
         Frequently Asked Questions
       </h1>
-      {faqs.map((faq, index) => (
-        <div key={index}>
-          <h3 className="font-semibold text-2xl">{faq.question}</h3>
-          {faq.answer}
-          {index < faqs.length - 1 && <Separator className="mt-4" />}
-        </div>
-      ))}
+      <Accordion
+        type="multiple"
+        className="w-full space-y-12 md:space-y-8 text-center md:text-start"
+      >
+        {faqs.map((faq) => (
+          <AccordionItem key={faq.question} value={faq.question}>
+            <AccordionTrigger className="font-semibold text-2xl">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-lg">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </div>
   );
 };

@@ -1,10 +1,15 @@
-import { Separator } from "@/app/components/ui/separator";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/app/components/ui/accordion";
 import Link from "next/link";
 import React from "react";
 
 const sections: Array<{ title: string; content: React.JSX.Element }> = [
   {
-    title: "Why It Was Created",
+    title: "The story behind Privacy Chat",
     content: (
       <p className="text-gray-700">
         Privacy Chat was created with a simple mission: to provide users with a
@@ -16,7 +21,7 @@ const sections: Array<{ title: string; content: React.JSX.Element }> = [
     ),
   },
   {
-    title: "What It Does",
+    title: "The usage of Privacy Chat",
     content: (
       <p className="text-gray-700">
         Privacy Chat offers a streamlined and intuitive chat experience that
@@ -29,7 +34,7 @@ const sections: Array<{ title: string; content: React.JSX.Element }> = [
     ),
   },
   {
-    title: "How It Serves You",
+    title: "Our main focus - the user",
     content: (
       <p className="text-gray-700">
         Our platform is designed with your security in mind. Whether you're
@@ -42,7 +47,7 @@ const sections: Array<{ title: string; content: React.JSX.Element }> = [
     ),
   },
   {
-    title: "How to get started",
+    title: "How to get started with Privacy Chat",
     content: (
       <p className="text-gray-700">
         Simply head over to our{" "}
@@ -59,21 +64,59 @@ const sections: Array<{ title: string; content: React.JSX.Element }> = [
       </p>
     ),
   },
+  {
+    title: "More information about Privacy Chat",
+    content: (
+      <p className="text-gray-500">
+        Check out some of the{" "}
+        <Link href="/faq" className="text-blue-400 hover:underline">
+          frequently asked questions
+        </Link>{" "}
+        if you wish to learn more about our project, or head over to our{" "}
+        <Link href="/privacy-policy" className="text-blue-400 hover:underline">
+          privacy policy
+        </Link>{" "}
+        to learn how we protect your data and information.
+      </p>
+    ),
+  },
 ];
 
 const AboutPage: React.FC = () => {
+  // return (
+  //   <div className="container space-y-4">
+  //     <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
+  //       About Privacy Chat
+  //     </h1>
+  //     {sections.map((section, index) => (
+  //       <div key={index}>
+  //         <h2 className="text-2xl font-semibold">{section.title}</h2>
+  //         {section.content}
+  //         {index < sections.length - 1 && <Separator className="mt-4" />}
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
   return (
-    <div className="container space-y-4">
+    <div className="container">
       <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
         About Privacy Chat
       </h1>
-      {sections.map((section, index) => (
-        <div key={index}>
-          <h2 className="text-2xl font-semibold">{section.title}</h2>
-          {section.content}
-          {index < sections.length - 1 && <Separator className="mt-4" />}
-        </div>
-      ))}
+      <Accordion
+        type="multiple"
+        className="w-full space-y-12 md:space-y-8 text-center md:text-start"
+      >
+        {sections.map((section) => (
+          <AccordionItem key={section.title} value={section.title}>
+            <AccordionTrigger className="font-semibold text-2xl">
+              {section.title}
+            </AccordionTrigger>
+            <AccordionContent className="text-lg">
+              {section.content}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </div>
   );
 };

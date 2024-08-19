@@ -31,7 +31,7 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
       setError("Unexpected error occurred.");
     }
   };
-
+  // TODO add proper mobile responsivity
   return (
     <Card className="w-[350px] mx-auto mt-16">
       <CardHeader>

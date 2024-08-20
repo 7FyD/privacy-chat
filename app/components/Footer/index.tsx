@@ -8,9 +8,8 @@ const Footer = () => {
           7FyD.dev
         </Link>
         <div className="flex flex-col md:!flex-row gap-2 md:gap-6">
-          <p>About us</p>
           <Link href="/faq">F.A.Q.</Link>
-          <p>Privacy Policy</p>
+          <Link href="/privacy-policy">Privacy Policy</Link>
           <p>Donate</p>
         </div>
       </div>

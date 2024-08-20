@@ -83,23 +83,9 @@ const sections: Array<{ title: string; content: React.JSX.Element }> = [
 ];
 
 const AboutPage: React.FC = () => {
-  // return (
-  //   <div className="container space-y-4">
-  //     <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
-  //       About Privacy Chat
-  //     </h1>
-  //     {sections.map((section, index) => (
-  //       <div key={index}>
-  //         <h2 className="text-2xl font-semibold">{section.title}</h2>
-  //         {section.content}
-  //         {index < sections.length - 1 && <Separator className="mt-4" />}
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
   return (
     <div className="container">
-      <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
+      <h1 className="text-4xl font-bold mb-8 text-center md:text-start text-gray-900">
         About Privacy Chat
       </h1>
       <Accordion
@@ -108,7 +94,7 @@ const AboutPage: React.FC = () => {
       >
         {sections.map((section) => (
           <AccordionItem key={section.title} value={section.title}>
-            <AccordionTrigger className="font-semibold text-2xl">
+            <AccordionTrigger className="font-semibold text-2xl text-gray-800">
               {section.title}
             </AccordionTrigger>
             <AccordionContent className="text-lg">

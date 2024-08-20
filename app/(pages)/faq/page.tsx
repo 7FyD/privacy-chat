@@ -99,7 +99,7 @@ const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
 const FAQPage = () => {
   return (
     <div className="container">
-      <h1 className="text-4xl font-bold mb-8 text-center md:text-start">
+      <h1 className="text-4xl font-bold mb-8 text-center md:text-start text-gray-900">
         Frequently Asked Questions
       </h1>
       <Accordion
@@ -108,7 +108,7 @@ const FAQPage = () => {
       >
         {faqs.map((faq) => (
           <AccordionItem key={faq.question} value={faq.question}>
-            <AccordionTrigger className="font-semibold text-2xl">
+            <AccordionTrigger className="font-semibold text-2xl text-gray-800">
               {faq.question}
             </AccordionTrigger>
             <AccordionContent className="text-lg">

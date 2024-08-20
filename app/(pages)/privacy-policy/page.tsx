@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const PrivacyPolicyPage = () => {
   return (
     <div className="container">
@@ -5,15 +7,24 @@ const PrivacyPolicyPage = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-6">
           Privacy Chat - "Private Conversations, Securely"
         </h1>
-        <p className="text-lg text-gray-700 mb-4">
-          Self-Destructing Rooms for Sharing Sensitive Information
-        </p>
-
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Privacy Chat Privacy Policy
+          Privacy Policy
         </h2>
-        <p className="text-lg text-gray-700 mb-6">Last modified: 8/9/2024</p>
-
+        <p className="text-lg font-light text-gray-700 mb-6">
+          Last modified: 20th August 2024
+        </p>
+        <p className="text-lg font-light text-gray-700 mb-2">
+          "We", "our platform", "us", "Privacy Chat" all refer to the same
+          platform -{" "}
+          <Link href="/" className="text-blue-400 hover:underline">
+            https://privacychat.7fyd.dev
+          </Link>
+          , owned by 7FyD Enterprises.
+        </p>
+        <p className="text-lg font-light text-gray-700 mb-6">
+          "You," "your," and "user" all refer to the individuals using the
+          Privacy Chat service.
+        </p>
         <p className="text-lg text-gray-700 mb-4">
           At <strong>Privacy Chat</strong>, your privacy is our top priority.
           Our service was designed to provide a secure platform for private
@@ -23,7 +34,7 @@ const PrivacyPolicyPage = () => {
         </p>
 
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-          What Information Do We Collect?
+          What information do We collect?
         </h3>
         <p className="text-lg text-gray-700 mb-4">
           We believe in keeping your data private. <strong>Privacy Chat</strong>{" "}
@@ -55,19 +66,19 @@ const PrivacyPolicyPage = () => {
         </h3>
         <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
           <li>
-            <strong>Room Security</strong>: Each room ID is unique and secure,
+            <strong>Room security</strong>: Each room ID is unique and secure,
             ensuring that only those with the credentials can access the
             conversation. The room credentials are deleted after the chat ends,
             ensuring no trace of the conversation remains on our servers.
           </li>
           <li>
-            <strong>Self-Destructing Rooms</strong>: Privacy Chat is designed to
+            <strong>Temporized chats</strong>: Privacy Chat is designed to
             ensure that all data associated with a room is irretrievably deleted
             once the conversation ends. This includes all messages and any other
             data related to the chat session.
           </li>
           <li>
-            <strong>Complete Anonymity</strong>: We prioritize your anonymity.
+            <strong>Complete anonymity</strong>: We prioritize your anonymity.
             No logs of conversations, user activities, or any other data are
             kept. This ensures your privacy is preserved at all times.
           </li>
@@ -76,36 +87,40 @@ const PrivacyPolicyPage = () => {
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">
           Disclaimer
         </h3>
-        <p className="text-lg text-gray-700 mb-4">
-          <strong>User Responsibility</strong>: While we do everything within
-          our power to protect your privacy, it is the user's responsibility to
-          keep the room credentials secure. Privacy Chat cannot be held
-          responsible for any data breaches resulting from users sharing their
-          credentials with others.
-        </p>
-        <p className="text-lg text-gray-700 mb-4">
-          <strong>No Access to Content</strong>: Privacy Chat has no access to
-          the content of your conversations. Once the room is closed, all data
-          is permanently deleted from our servers and cannot be recovered.
-        </p>
-        <p className="text-lg text-gray-700 mb-6">
-          <strong>Changes to the Privacy Policy</strong>: Please note that this
-          Privacy Policy may be updated from time to time. Any changes will be
-          posted here with the updated modification date.
-        </p>
-
+        <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
+          <li>
+            <strong>User responsibility</strong>: While we do everything within
+            our power to protect your privacy, it is the user's responsibility
+            to keep the room credentials secure. Privacy Chat cannot be held
+            responsible for any data breaches resulting from users sharing their
+            credentials with others.
+          </li>
+          <li>
+            <strong>No access to content</strong>: Privacy Chat has no access to
+            the content of your conversations. Once the room is closed, all data
+            is permanently deleted from our servers and cannot be recovered.
+          </li>
+          <li>
+            <strong>Changes to the Privacy Policy</strong>: We will never change
+            our priority. If we are forced to remove our privacy-oriented
+            approach, the platform will be shutdown instead of risking user
+            data.
+          </li>
+        </ul>
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-          Contact Information
+          Contact information
         </h3>
         <p className="text-lg text-gray-700 mb-4">
           If you have any questions about this Privacy Policy or any concerns
           regarding privacy issues, please contact us at{" "}
-          <a
-            href="mailto:info@privacychat.com"
-            className="text-blue-600 underline"
+          <Link
+            href="mailto:privacychat@7fyd.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
           >
-            info@privacychat.com
-          </a>
+            privacychat@7fyd.dev
+          </Link>
           .
         </p>
         <p className="text-lg text-gray-700 mb-4">

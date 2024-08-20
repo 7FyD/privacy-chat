@@ -13,7 +13,6 @@ const Header = () => {
         </div>
         <div className="flex justify-start gap-12 items-center">
           <Link href="/about">About Privacy Chat</Link>
-          <Link href="/">Contact</Link>
         </div>
       </div>
     </div>

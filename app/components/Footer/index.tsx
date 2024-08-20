@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="flex flex-col md:!flex-row gap-2 md:gap-6">
           <Link href="/faq">F.A.Q.</Link>
           <Link href="/privacy-policy">Privacy Policy</Link>
-          <p>Donate</p>
+          <Link href="/donate">Donate</Link>
         </div>
       </div>
     </div>

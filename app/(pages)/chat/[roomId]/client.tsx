@@ -181,7 +181,11 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
           <p className="font-bold mt-[-10px]">Connected users:</p>
           <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto justify-center items-center lg:items-start">
             {userList && userList.length > 0 ? (
-              userList.map((user) => <p key={user.id}>{user.username}</p>)
+              userList.map((user) => (
+                <p key={user.id}>
+                  {user.username} {user.username === username && "- you"}
+                </p>
+              ))
             ) : (
               <p>No users found.</p>
             )}

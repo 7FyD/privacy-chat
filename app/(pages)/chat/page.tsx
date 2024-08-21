@@ -25,12 +25,13 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { Label } from "@/app/components/ui/label";
+import { MoonLoader } from "react-spinners";
 
 const ChatDefault = () => {
   const router = useRouter();
 
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("Anonymous user");
   const [isLoading, startTransition] = useTransition();
   const [duration, setDuration] = useState("");
   const [error, setError] = useState("");
@@ -54,7 +55,6 @@ const ChatDefault = () => {
       });
     }
   };
-  // TODO add button submit responsive design (small loading beater + isLoading)
   // TODO add room created feedback (success toast + option to copy link? popup after redirect?)
   return (
     <Card className="w-[300px] sm:w-[350px] mx-auto mt-16 overflow-hidden">
@@ -67,27 +67,25 @@ const ChatDefault = () => {
       <CardContent>
         <div className="grid w-full items-center gap-6">
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Displayed Username</Label>
             <Input
               value={user}
               onChange={(e) => setUser(e.target.value)}
               type="text"
               id="name"
-              placeholder="Anonymous user"
             />
           </div>
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="password">Room password</Label>
+            <Label htmlFor="password">Room password (optional)</Label>
             <Input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               id="password"
-              placeholder="******"
             />
           </div>
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="duration">Room lifespan *</Label>
+            <Label htmlFor="duration">Room lifespan</Label>
             <Select
               onValueChange={(e) => setDuration(e)}
               defaultValue={duration}
@@ -112,6 +110,9 @@ const ChatDefault = () => {
           {success}
         </p>
         <p className="text-center text-red-500 font-medium mt-4">{error}</p>
+        {isLoading && (
+          <MoonLoader className="mx-auto" size="32" color="#7C3AED" />
+        )}
       </CardContent>
       <CardFooter>
         <Button

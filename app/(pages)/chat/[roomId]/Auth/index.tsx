@@ -15,14 +15,17 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import Link from "next/link";
+import { MoonLoader } from "react-spinners";
 
 const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("Anonymous user");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       await joinRoom(roomId, password, user).then((data) => {
         if (data.error) {
           setError(data.error);
@@ -30,9 +33,10 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
       });
     } catch (err) {
       setError("Unexpected error occurred.");
+    } finally {
+      setIsLoading(false);
     }
   };
-  // TODO add button submit responsive design (small loading beater + isLoading)
   return (
     <Card className="w-[300px] sm:w-[350px] mx-auto mt-16 overflow-hidden">
       <CardHeader>
@@ -44,13 +48,12 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
       <CardContent>
         <div className="grid w-full items-center gap-6">
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Displayed Username</Label>
             <Input
               value={user}
               onChange={(e) => setUser(e.target.value)}
               type="text"
               id="name"
-              placeholder="Anonymous user"
             />
           </div>
           <div className="flex flex-col space-y-1.5">
@@ -60,7 +63,6 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               id="password"
-              placeholder="******"
             />
           </div>
         </div>
@@ -70,7 +72,10 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
         <Link href="/chat">
           <Button variant="outline">Go back</Button>
         </Link>
-        <Button onClick={handleSubmit}>Join room</Button>
+        {isLoading && <MoonLoader size="32" color="#7C3AED" />}
+        <Button disabled={isLoading} onClick={handleSubmit}>
+          Join room
+        </Button>
       </CardFooter>
     </Card>
   );

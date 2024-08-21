@@ -23,17 +23,18 @@ const Auth: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await joinRoom(roomId, password, user);
-      if (response.error) {
-        setError(response.error);
-      }
+      await joinRoom(roomId, password, user).then((data) => {
+        if (data.error) {
+          setError(data.error);
+        }
+      });
     } catch (err) {
       setError("Unexpected error occurred.");
     }
   };
-  // TODO add proper mobile responsivity
+  // TODO add button submit responsive design (small loading beater + isLoading)
   return (
-    <Card className="w-[350px] mx-auto mt-16">
+    <Card className="w-[300px] sm:w-[350px] mx-auto mt-16 overflow-hidden">
       <CardHeader>
         <CardTitle className="text-primary">Join room</CardTitle>
         <CardDescription className="text-primary/90">

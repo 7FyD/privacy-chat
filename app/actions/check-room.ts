@@ -1,5 +1,6 @@
 "use server";
 
+import { Chat } from "@prisma/client";
 import { db } from "../lib/prisma";
 import { deleteAuthCookie } from "./auth-cookie";
 import { deleteRoom } from "./delete-room";
@@ -13,17 +14,23 @@ export const checkRoom = async (roomId: string) => {
     });
     if (!room) {
       deleteAuthCookie(roomId);
-      return false;
+      return { error: "Invalid room. Redirecting." };
     }
 
     const now = new Date();
-    if (room?.createdAt < new Date(now.getTime() - room.ttl * 1000)) {
+    if (room.createdAt < new Date(now.getTime() - room.ttl * 1000)) {
       deleteRoom(roomId);
       deleteAuthCookie(roomId);
-      return false;
+      return { error: "Room expired. Redirecting." };
     }
-    return true;
+
+    const expirationTime = new Date(now.getTime() - room.ttl * 1000);
+
+    const remainingTime = room.createdAt.getTime() - expirationTime.getTime();
+
+    return { remainingTime, success: "Room validated. " };
   } catch (e) {
-    return false;
+    console.error(e);
+    return { error: "Unknown server error occured. " };
   }
 };

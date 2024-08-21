@@ -9,6 +9,9 @@ import { Button } from "@/app/components/ui/button";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { Clipboard } from "lucide-react";
 import { Separator } from "@/app/components/ui/separator";
+import toast from "react-hot-toast";
+import { MoonLoader } from "react-spinners";
+import Countdown from "@/app/components/Countdown";
 
 interface Message {
   user: string;
@@ -33,12 +36,25 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
   const [showTimestamps, setShowTimestamps] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [userList, setUserList] = useState<Array<Connection>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [expiry, setExpiry] = useState<number>(0);
+
   useEffect(() => {
     const checkRoomValidity = async () => {
-      const isValid = await checkRoom(roomId);
-      if (!isValid) window.location.reload();
+      await checkRoom(roomId).then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500);
+        }
+        if (data.success) {
+          toast.success(data.success);
+          setIsLoading(false);
+          setExpiry(data.remainingTime);
+        }
+      });
     };
-
     checkRoomValidity();
   }, [roomId]);
 
@@ -98,13 +114,15 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
     navigator.clipboard.writeText(text);
   };
 
+  if (isLoading) return <MoonLoader className="mx-auto mt-8" color="#7C3AED" />;
+
   return (
     <div className="container">
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <div className="space-y-6">
           <div
             id="messagesContainer"
-            className="min-h-[44rem] max-h-[44rem] w-full sm:w-[40rem] md:w-[48rem] xl:w-[64rem] break-words overflow-y-auto border-2 p-4 rounded-xl bg-white"
+            className="min-h-[44rem] max-h-[44rem] w-full lg:w-[50rem] xl:w-[64rem] break-words overflow-y-auto border-2 p-4 rounded-xl bg-white"
             ref={messagesEndRef}
           >
             {messages.length === 0 ? (
@@ -139,7 +157,7 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
               maxLength={320}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message"
-              className="w-full md:max-w-xl bg-white"
+              className="w-full lg:max-w-xl bg-white"
               onKeyDown={handleKeyDown}
             />
             <Button className="w-48" variant="default" onClick={sendMessage}>
@@ -147,8 +165,11 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
             </Button>
           </div>
         </div>
-        <div className="flex flex-col items-center md:items-start space-y-6">
-          <p>Time remaining: ...</p>
+        <div className="flex flex-col items-center lg:items-start space-y-6">
+          <div className="flex gap-1 items-center">
+            <p>Time left:</p>
+            <Countdown initialTime={expiry} />
+          </div>
           <div className="flex justify-start items-center gap-2">
             <Checkbox
               checked={showTimestamps}
@@ -158,7 +179,7 @@ const ChatClient: React.FC<{ roomId: string; username: string }> = ({
           </div>
           <Separator className="h-[1.5px]" />
           <p className="font-bold mt-[-10px]">Connected users:</p>
-          <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto pr-16">
+          <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto justify-center items-center lg:items-start">
             {userList && userList.length > 0 ? (
               userList.map((user) => <p key={user.id}>{user.username}</p>)
             ) : (

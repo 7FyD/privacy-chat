@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy Chat - Privacy Policy",
+  description:
+    "Private & fully privacy-safe chats, simple to use and with no sign up required!",
+};
 
 const PrivacyPolicyPage = () => {
   return (

@@ -1,6 +1,12 @@
 import { cookies } from "next/headers";
 import ChatClient from "./client";
 import Auth from "./Auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Chat - Chat",
+  description: "Enjoy a private conversation now!",
+};
 
 export default async function ChatPage({
   params,

@@ -4,9 +4,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/app/components/ui/accordion";
-import { Separator } from "@/app/components/ui/separator";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Privacy Chat - F.A.Q.",
+  description:
+    "Private & fully privacy-safe chats, simple to use and with no sign up required!",
+};
 
 const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
   {

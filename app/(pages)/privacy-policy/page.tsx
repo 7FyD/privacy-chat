@@ -17,9 +17,8 @@ const PrivacyPolicyPage = () => {
           "We", "our platform", "us", "Privacy Chat" all refer to the same
           platform -{" "}
           <Link href="/" className="text-blue-400 hover:underline">
-            https://privacychat.7fyd.dev
+            https://pc.thelungu.com
           </Link>
-          , owned by 7FyD Enterprises.
         </p>
         <p className="text-lg font-light text-gray-700 mb-6">
           "You," "your," and "user" all refer to the individuals using the

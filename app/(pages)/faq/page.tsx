@@ -15,11 +15,11 @@ const faqs: Array<{ question: string; answer: React.JSX.Element }> = [
       <p className="text-gray-700">
         Yes, our Privacy Chat services run exclusively on HTTPS, ensuring that
         all data transferred between the server and the client is fully
-        encrypted. Messages are temporarily stored in the server's local memory
-        and are automatically deleted after a set period or when the room
-        expires. Importantly, no other party interacts with the data, and since
-        there are no user accounts or IDs, messages cannot be linked to any
-        specific user. Additionally, we're soon going to introduce{" "}
+        encrypted. Messages are temporarily stored alongside the chatroom's ID
+        and password, which all get deleted once the chatroom expires.
+        Importantly, no other party interacts with the data, and since there are
+        no user accounts or IDs, messages cannot be linked to any specific user.
+        Additionally, we're soon going to introduce{" "}
         <Link
           href="https://w.wiki/6xEG"
           target="_blank"
